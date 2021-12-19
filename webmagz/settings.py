@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-*fuc3u5w5lls(eagw#*5&)2xh4iuq(_wdd5@k$d4-me-hz(s(p
 # ALLOWED_HOSTS = []
 
 DEBUG = False
-ALLOWD_HOSTS = ['webmagz.pythonanywhere.com',]
+ALLOWED_HOSTS = ['webmagz.pythonanywhere.com',]
 
 # Application definition
 
