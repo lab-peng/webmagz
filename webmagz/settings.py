@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'webmagz$magz',
         'USER': 'webmagz',
-        'PASSWORD': 'asdf0987',
+        'PASSWORD': 'd4eUR9XC@q4jXFS',
         'HOST': 'webmagz.mysql.pythonanywhere-services.com',
         'PORT': '3306',
     }
