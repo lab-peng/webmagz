@@ -1,0 +1,16 @@
+# MPTT (Modified Preorder Tree Traversal)
+
+https://django-mptt.readthedocs.io/en/latest/tutorial.html
+https://www.youtube.com/watch?v=8jWr3ewz2S4&t=1691s
+
+pip install django-mptt
+from mptt.models import MPTTModel, TreeForeignKey
+
+
+# Create Users in Django Shell
+from django.contrib.auth.models import User
+User.objects.create_user(username='user4',password='pass4', first_name='William Somerset',last_name='Maugham')
+
+
+# Open GitHub Repo's Online
+github1s.com

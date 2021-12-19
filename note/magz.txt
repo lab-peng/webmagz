@@ -1,0 +1,27 @@
+magz logo --> DJANGO
+
+first page needs photo all articles don't need photos
+
+
+CATEGORY
+
+Django
+Python
+
+
+figure out a knowledge structure   a flexible structure that can be easily toned in the future
+
+
+ajax.views  seperate views
+
+
+
+ajax like_unlike 
+many pages need to share one ajax function in a js.file?  right now I put the script in base_blog.html and it works
+
+Q: How do I change password for a Django.contrib.auth.models.User user?
+A: python manage.py changepassword <user_name>
+
+
+MTTP
+ajax form check  ajax register form at first

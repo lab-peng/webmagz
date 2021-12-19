@@ -1,0 +1,62 @@
+Scrape all Maugaham short stories and insert them into MySQL database
+
+An example of how to scrape a webpage where the structure of the html DOM is not strictly tree shaped
+# pip install BeautifulSoup4
+
+url1 = 'https://gutenberg.ca/ebooks/maughamws-completeshortstories01/maughamws-completeshortstories01-00-h.html' # Volume One
+url2 = 'https://gutenberg.ca/ebooks/maughamws-completeshortstories02/maughamws-completeshortstories02-00-h.html' # Volume Two
+url3 = 'https://gutenberg.ca/ebooks/maughamws-completeshortstories03/maughamws-completeshortstories03-00-h.html' # Volume Three
+
+url = 'https://gutenberg.ca/ebooks/maughamws-completeshortstories03/maughamws-completeshortstories03-00-h.html' # Volume Three
+from bs4 import BeautifulSoup as bs
+import requests
+r = requests.get(url)
+
+text = r.text
+soup = bs(text, 'html.parser')
+title_tags = soup.find_all('h3')
+titles = []
+for title in title_tags:
+    titles.append(str(title).replace('<br/>', '<br>'))
+
+titles = titles[3:]
+story_titles = [bs(title, 'html.parser').text.strip() for title in titles]
+print(len(titles), len(story_titles))
+
+
+
+end = '''<br>
+<br>
+<br>
+<br>
+<br>
+
+[End'''
+stories = []
+for i, title in enumerate(titles):
+    try:
+        article = text[text.find(titles[i])+len(titles[i]):text.find(titles[i+1])]
+        stories.append(article)
+    except IndexError:
+        pass
+        
+last_article = text[text.find(titles[-1])+len(titles[-1]): text.find(end)]
+stories.append(last_article)
+print(len(stories))
+
+
+from django.contrib.auth.models import User
+from blog.models import *
+description = 'A collection of memorable short stories from an acknowledged master of short stories! Almost everyone is a piece of art. '
+
+for i in range(len(stories)):
+    Blog.objects.create(
+        title=story_titles[i], 
+        description = description,
+        content = stories[i],
+        author = User.objects.get(last_name='Maugham'),
+        category = Category.objects.get(title='Literature')
+    )
+
+
+

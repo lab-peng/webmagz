@@ -1,0 +1,204 @@
+{% extends "blog/blog_base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}
+
+{% if author %}
+Articles by {{ author.first_name }} {{ author.last_name }}
+{% elif category %}
+{{ category.title }} Articles
+{% else %}
+All Articles
+{% endif %}
+
+{% endblock %}
+{% block content %}
+<section class="category">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 text-left">
+				<div class="row">
+					<div class="col-md-12">
+						<ol class="breadcrumb">
+							<li><a href="{% url 'blog:index' %}">Home</a></li>
+							<li class="active">
+								{% if author %}
+								Articles by {{ author.first_name }} {{ author.last_name }}
+								{% elif category %}
+								{{ category.title }}
+								{% else %}
+								All Articles
+								{% endif %}
+							</li>
+						</ol>
+					</div>
+				</div>
+				<div class="line"></div>
+				<div class="row">
+					{% for a in blog_list %}
+					<article class="col-md-12 article-list">
+						<div class="detail">
+							<div class="category">
+								<a href="{% url 'blog:category_blog_list' a.category.slug %}">{{ a.category.title }}</a>
+								{# <span>{{ a|author_status:1 }}</span>#}
+							</div>
+							<div class="time">{{ a.created_at|date:'D, F d, Y'}}</div>
+						</div>
+						<h1><a href="{% url 'blog:blog_detail' a.pk %}">{{ a.title }}</a></h1>
+						<p>
+							{{ a.description }}
+						</p>
+						<footer>
+							{% if request.user in a.likes.all %}
+							<a href="#" id="like_unlike" class="love active" article_id="{{ a.id }}">
+								<i class="ion-android-favorite"></i>
+								<div id="likes-count-id-{{ a.id }}">{{ a.likes_count }}</div>
+							</a>
+							{% else %}
+							<a href="#" id="like_unlike" class="love" article_id="{{ a.id }}">
+								<i class="ion-android-favorite-outline"></i>
+								<div id="likes-count-id-{{ a.id }}">{{ a.likes_count }}</div>
+							</a>
+							{% endif %}
+							<a class="btn btn-primary more" href="{% url 'blog:blog_detail' a.pk %}">
+								<div>More</div>
+								<div><i class="ion-ios-arrow-thin-right"></i></div>
+							</a>
+						</footer>
+					</article>
+					{% endfor %}
+
+					<!-- <div class="col-md-12 text-center">
+						<ul class="pagination">
+							<li class="prev"><a href="#"><i class="ion-ios-arrow-left"></i></a></li>
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">...</a></li>
+							<li><a href="#">97</a></li>
+							<li class="next"><a href="#"><i class="ion-ios-arrow-right"></i></a></li>
+						</ul>
+						<div class="pagination-help-text">
+							Showing 8 results of 776 &mdash; Page 1
+						</div>
+					</div> -->
+					<div class="col-md-12 text-center">
+						<ul class="pagination">
+							{% if is_paginated %}
+				
+							{% if page_obj.has_previous %}
+							<li><a href="?page=1"><i class="ion-ios-arrow-left"></i><i class="ion-ios-arrow-left"></i></a></li>
+							<li class="prev"><a href="?page={{ page_obj.previous_page_number }}"><i class="ion-ios-arrow-left"></i></a></li>
+							{% endif %}
+				
+							{% for num in page_obj.paginator.page_range %}
+							{% if page_obj.number == num %}
+							<li class="active"><a href="?page={{num}}">{{ num }}</a></li>
+							{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+							<li><a href="?page={{num}}">{{ num }}</a></li>
+							{% endif %}
+							{% endfor %}
+				
+							{% if page_obj.has_next %}
+							<li class="next"><a href="?page={{ page_obj.next_page_number }}"><i class="ion-ios-arrow-right"></i></a></li>
+							<li><a href="?page={{ page_obj.paginator.num_pages }}"><i class="ion-ios-arrow-right"></i><i class="ion-ios-arrow-right"></i></a></li>
+							{% endif %}
+
+							{% endif %}
+							</ul>
+							<div class="pagination-help-text">
+								<!-- Showing {{ page_obj.number  }} results of {{ paginator.count }} &mdash; Page {{ page_obj.number }} -->
+								Total {{ paginator.count }} articles &mdash; Page {{ page_obj.number }} of total {{ page_obj.paginator.num_pages }} pages
+							</div>													
+					</div>
+
+				</div>
+			</div>
+			<div class="col-md-4 sidebar">
+				<aside>
+					<div class="aside-body">
+						<figure class="ads">
+							<a href="#">
+								<img src="{% static 'blog/images/ad.png' %}">
+							</a>
+							<figcaption>Advertisement</figcaption>
+						</figure>
+					</div>
+				</aside>
+				<aside>
+					<h1 class="aside-title">Recent Post</h1>
+					<div class="aside-body">
+						<article class="article-fw">
+							<div class="inner">
+								<figure>
+									<a href="{% url 'blog:blog_detail' recent_post.pk %}">
+										{% if recent_post.title_image %}
+										<img src="{{ recent_post.title_image.url }}" alt="">
+										{% else %}
+										<img src="{% static 'blog/images/news/img12.jpg' %}">
+										{% endif %}
+									</a>
+								</figure>
+								<div class="details">
+									<h1><a href="{% url 'blog:blog_detail' recent_post.pk %}">{{ recent_post.title }}</a></h1>
+									<p>
+										{{ recent_post.description }}
+									</p>
+									<div class="detail">
+										<div class="time">{{ recent_post.created_at|date:'F d, Y'}}</div>
+										<div class="category"><a
+												href="{% url 'blog:category_blog_list' recent_post.category.slug %}">
+												{{ recent_post.category.title }}</a></div>
+									</div>
+								</div>
+							</div>
+						</article>
+						<div class="line"></div>
+						{% for a in recent_posts %}
+						<article class="article-mini">
+							<div class="inner">
+								<figure>
+									<a href="{% url 'blog:blog_detail' a.pk %}">
+										{% if a.title_image %}
+										<img src="{{ a.title_image.url }}" alt="">
+										{% else %}
+										<img src="{% static 'blog/images/news/img12.jpg' %}">
+										{% endif %}
+									</a>
+								</figure>
+								<div class="padding">
+									<h1><a href="{% url 'blog:blog_detail' a.pk %}">{{ a.title }}</a></h1>
+									<div class="detail">
+										<div class="category"><a
+												href="{% url 'blog:category_blog_list' a.category.slug %}">
+												{{ a.category.title }}</a></div>
+										<div class="time">{{ a.created_at|date:'F d, Y'}}</div>
+									</div>
+								</div>
+							</div>
+						</article>
+						{% endfor %}
+					</div>
+				</aside>
+				<!-- <aside>
+					<div class="aside-body">
+						<form class="newsletter">
+							<div class="icon">
+								<i class="ion-ios-email-outline"></i>
+								<h1>Newsletter</h1>
+							</div>
+							<div class="input-group">
+								<input type="email" class="form-control email" placeholder="Your mail">
+								<div class="input-group-btn">
+									<button class="btn btn-primary"><i class="ion-paper-airplane"></i></button>
+								</div>
+							</div>
+							<p>By subscribing you will receive new articles in your email.</p>
+						</form>
+					</div>
+				</aside> -->
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "blog/blog_base.html" %}
+{% load static %}
+{% block title %} Delete Confirmation {% endblock %}
+{% block content %}
+    		<section class="login first grey">
+			<div class="container">
+				<div class="box-wrapper">
+					<div class="box box-border">
+						<div class="box-body">
+							<h4>Delete Confirmation</h4>
+							<form method="post">
+								{% csrf_token %}
+                                <div class="form-group">
+                                   <label>Are you sure you want to delete this article?</label>
+								</div>
+								<div class="form-group text-right">
+									<button class="btn btn-primary btn-block">Confirm</button>
+								</div>
+								<div class="title-line">
+									or
+								</div>
+              	<a href="{% url 'blog:blog_detail' object.pk %}" class="btn btn-social btn-block facebook"></i> Cancel</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+{% endblock %}

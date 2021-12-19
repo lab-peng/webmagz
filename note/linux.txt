@@ -1,0 +1,10 @@
+Virturl Environment
+# 1 create a virtual environment
+python3 -m venv venv_name
+# 2 activate the venv
+source /path/to/venv/bin/activate
+# 3 deactivate
+deactivate
+
+
+

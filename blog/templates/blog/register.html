@@ -1,0 +1,119 @@
+{% extends "blog/blog_base.html" %}
+{% load static %}
+{% block title %} Register {% endblock %}
+{% block content %}
+<section class="login first grey">
+	<div class="container">
+		<div class="box-wrapper">
+			<div class="box box-border">
+				<div class="box-body">
+					<h4>Register</h4>
+					<form method="post" id="register_form">
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="id_username">Username</label>
+							<input type="text" id="id_username" name="username" class="form-control" autocomplete="false">
+						</div>
+						<div class="form-group">
+							<label class="fw">Password</label>
+							<input type="password" id="id_password1" name="password1" class="form-control" autocomplete="false">
+						</div> 
+						<div class="form-group">
+							<label class="fw">Password Confirmation</label>
+							<input type="password" id="id_password2" name="password2" class="form-control" autocomplete="false">
+						</div> 
+
+						<div class="form-group text-right">
+							<button type="submit" class="btn btn-primary btn-block">Register</button>
+						</div>
+						<div class="form-group text-center">
+							<span class="text-muted">Already have an account?</span> <a href="{% url 'blog:login' %}">Login</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+        $('#register_form').on('submit', function (e) {
+			e.preventDefault();
+            let username = $('#id_username').val();
+			let password1 = $('#id_password1').val();
+			let password2 = $('#id_password2').val();
+
+            $.ajax({
+                url: '{% url "blog:register_check" %}',
+                data: {
+                    'username': username,
+					'password1': password1,
+					'password2': password2
+                },
+                dataType: 'json',
+                success: function (error) {
+                    if (error.username_is_taken ) {
+						Swal.fire({
+								text: "A user with that username already exists",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+                  }
+				  	else if (error.username_is_empty) {
+						Swal.fire({
+								text: "Username can not be empty",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+					  }
+				  	else if (error.password1_is_empty) {
+						Swal.fire({
+								text: "Password can not be empty",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+					  }
+				  	else if (error.password2_is_empty) {
+						Swal.fire({
+								text: "Password Confirmation can not be empty",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+					  }
+				  	else if (error.password_lt8 ) {
+						Swal.fire({
+								text: "Password must contain at least 8 characters",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+					  }
+				  	else if (error.password_only_numeric) {
+						Swal.fire({
+								text: "Password can not be entirely numeric",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+					  }
+				  	else if (error.passwords_not_same) {
+						Swal.fire({
+								text: "Your password and password confirmation do not match",
+								icon: 'warning',
+								confirmButtonColor: '#F73F52',
+								confirmButtonText: 'OK'
+						});
+					  }
+                    else {
+                        $("#register_form").unbind('submit').submit();
+                    }
+                }
+            });
+        });		
+	})
+</script>
+{% endblock %}
