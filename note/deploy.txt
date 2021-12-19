@@ -8,8 +8,10 @@ pythonanywere mysql
 databas
 d4eUR9XC@q4jXFS
 
-
+# Caveat:
 Currently do Not use wsl git. I haven't figured out the right configs yet.
+python manage.py dumpdata --exclude=auth --exclude=contenttypes --exclude=blog.profile > db.json
+
 
 
 mkvirtualenv --python=/usr/bin/python3.9 [venv_name]
@@ -20,6 +22,11 @@ workon [venv_name]
 /home/webmagz/webmagz
 webmagz
 venv
+
+
+# Go to File --> settings.py  
+set DEBUG = False
+ALLOWED_HOSTS = ['username.pythonanywhere.com']
 
 
 # 1 Find 3 pieces of information:
@@ -47,7 +54,6 @@ $ ls
 
 $ python manage.py collectstatic
 
-# Go to File --> settings.py  
-set DEBUG = False
-ALLOWED_HOSTS = ['username.pythonanywhere.com']
-STATIC_ROOT = BASE_DIR / 'static'
+
+
+
