@@ -7,3 +7,11 @@ pythonanywere mysql
 
 databas
 d4eUR9XC@q4jXFS
+
+
+Currently do Not use wsl git. I haven't figured out the right configs yet.
+
+
+mkvirtualenv --python=/usr/bin/python3.9 [venv_name]
+deactivate
+workon [venv_name]
