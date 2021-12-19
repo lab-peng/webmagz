@@ -92,16 +92,6 @@
         }
     },
     {
-        "model": "blog.profile",
-        "pk": 7,
-        "fields": {
-            "user": 7,
-            "occupation": null,
-            "intro": null,
-            "pic": "profiles/default.jpg"
-        }
-    },
-    {
         "model": "blog.category",
         "pk": 1,
         "fields": {
