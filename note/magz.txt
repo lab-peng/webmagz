@@ -25,3 +25,13 @@ A: python manage.py changepassword <user_name>
 
 MTTP
 ajax form check  ajax register form at first
+
+
+
+User.objects.create(username='user1', password='pass1', first_name='Rene', last_name='Descartes')
+User.objects.create(username='user2', password='pass2', first_name='Isaac', last_name='Newton')
+User.objects.create(username='user3', password='pass3', first_name='Carl', last_name='Gauss')
+User.objects.create(username='user4', password='pass4', first_name='William Somerset', last_name='Maugham')
+User.objects.create(username='user5', password='pass5', first_name='George', last_name='Carlin')
+User.objects.create(username='user6', password='pass6', first_name='Andrew', last_name='Yang')
+User.objects.create(username='user7', password='pass7', first_name='Mao', last_name='Zedong')
