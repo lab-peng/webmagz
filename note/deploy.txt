@@ -15,3 +15,39 @@ Currently do Not use wsl git. I haven't figured out the right configs yet.
 mkvirtualenv --python=/usr/bin/python3.9 [venv_name]
 deactivate
 workon [venv_name]
+
+
+/home/webmagz/webmagz
+webmagz
+venv
+
+
+# 1 Find 3 pieces of information:
+# a. The path to Django project's top folder --  the folder that contains "manage.py"
+$ pwd
+# b. The name of project -- the name of the folder that contains your settings.py
+$ ls
+# c. The name of virtualenv
+
+# 2 Go to Web --> Add a new web app --> Next --> Manual configuration
+# Enter the path to your web app source code:  Information piece I
+# Working directory: Information piece I
+
+# 3 WSGI configuration file:  
+# set path = Information piece I
+# set os.environ['DJANGO_SETTINGS_MODULE'] = 'Information piece II.settings'
+
+# 4 Enter path to a virtualenv, if desired: Information piece III
+
+# 5 Go to Web --> Static files:
+# Enter URL: /static/
+# Enter path: Information piece I/static
+# Enter URL: /media/
+# Enter path: Information piece I/media
+
+$ python manage.py collectstatic
+
+# Go to File --> settings.py  
+set DEBUG = False
+ALLOWED_HOSTS = ['username.pythonanywhere.com']
+STATIC_ROOT = BASE_DIR / 'static'
